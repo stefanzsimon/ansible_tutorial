@@ -1,0 +1,20 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: uppdatera repository index
+    apt:
+      update_cache: yes
+
+  - name: Avinstallera apache till servers
+    apt:
+      name: apache2
+      state: absent
+
+
+  - name: Ta bort PHP support för Apache2
+    apt:
+      name: libapache2-mod-php
+      state: absent

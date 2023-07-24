@@ -1,0 +1,20 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: uppdatera repository index
+    apt:
+      update_cache: yes
+
+  - name: installera apache till servers
+    apt:
+      name: apache2
+      state: latest
+
+
+  - name: lägg till PHP support för Apache2
+    apt:
+      name: libapache2-mod-php
+      state: latest
