@@ -1,0 +1,44 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: installera uppdateringar på CentOS
+    tags: always
+    dnf:
+      update_only: yes
+      update_cache: yes
+    when: ansible_distribution == "CentOS"
+
+  - name: installera uppdateringar på Ubuntu
+    tags: always
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: skapa en ny användare
+    tags: always
+    user: 
+      name: simone
+      groups: root
+
+  - name: lägg till SSHnyckel för simone
+    tags: always
+    authorized_key:
+      user: simone
+      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAFFpWePY73lU3AzS80CD05o+GAWl8Im5HUBaOETRaJA ansible"
+
+  - name: lägg till sudoers file för simone
+    tags: always
+    copy:
+      src: sudoer_simone
+      dest: /etc/sudoers.d/simone
+      owner: root
+      group: root
+      mode: 0440
