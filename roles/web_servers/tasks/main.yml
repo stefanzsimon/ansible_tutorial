@@ -1,45 +1,26 @@
-- name: installera apache till servers Ubuntu
-  tags: apache, apache2, ubuntu 
-  apt:
+- name: installera apache och php till servers 
+  tags: apache, httpd, php
+  package:
     name: 
-      - apache2
-      - libapache2-mod-php
+      - "{{ apache_package_name }}"
+      - "{{ php_package_name }}"
     state: latest
-  when: ansible_distribution == "Ubuntu"
 
-- name: installera apache till servers centos
-  tags: apache, centos, httpd
-  dnf:
-    name:
-      - httpd
-      - php
-    state: latest
-  when: ansible_distribution == "CentOS"
-
-- name: starta service för apache till servers centos
+- name: starta service för apache till servers
   tags: apache, centos, httpd
   service:
-    name: httpd
+    name: "{{ apache_service }}"
     state: started
     enabled: yes
-  when: ansible_distribution == "CentOS"
 
 - name: ändra i en config fil ex email apacheadmin centos
   tags: apache, centos, httpd
   lineinfile:
     path: /etc/httpd/conf/httpd.conf
     regexp: 'ServerAdmin'
-    line: ServerAdmin stefan@stefan.se 
+    line: ServerAdmin stefan@stefan.net 
   when: ansible_distribution == "CentOS"
-  register: nymail
-
-- name:  omstarta 1 service centos
-  tags: apache, centos, httpd
-  service:
-    name: httpd
-    state: restarted
-  when: nymail.changed
- 
+  notify: restart_apache
 
 - name: kopiera html-filen till servers
   tags: apache, apache2, httpd
