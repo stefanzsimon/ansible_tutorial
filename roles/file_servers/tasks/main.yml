@@ -1,0 +1,6 @@
+- name: installera samba till servers Ubuntu och Centos
+  tags: samba
+  package:
+    name: 
+      - samba
+    state: latest

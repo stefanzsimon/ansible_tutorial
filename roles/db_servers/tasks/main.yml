@@ -1,0 +1,16 @@
+- name: installera MariadBe till servers CentOS
+  tags: centos, db, mariadb
+  dnf:
+    name: 
+      - mariadb
+    state: latest
+  when: ansible_distribution == "CentOS"
+
+- name: installera mariadB till servers Ubuntu
+  tags: db, mariadb,ubuntu
+  apt:
+    name: 
+      - mariadb-server
+      - libapache2-mod-php
+    state: latest
+  when: ansible_distribution == "Ubuntu"

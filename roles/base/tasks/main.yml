@@ -1,0 +1,5 @@
+- name: lägg till SSHnyckel för simone
+  authorized_key:
+    user: simone
+    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAFFpWePY73lU3AzS80CD05o+GAWl8Im5HUBaOETRaJA ansible"
+
